@@ -1,0 +1,131 @@
+{
+  "Login": {
+    "USERNAME": "20001272",
+    "PASSWORD": "Kotak@123",
+    "username_path": "#email",
+    "password_path": "#password",
+    "LOGIN_BTN": "button[type=\"submit\"]"
+  },
+  "Locators": {
+    "Login": {
+      "url": "https://tathya.zurichkotak.com/login"
+    },
+    "ClaimSearch": {
+      "cardSectionLink": ".card_section a",
+      "searchInput": ".fraud input",
+      "noRecordsText": "text=There are no records for this search",
+      "firstResultLink": "[role=\"row\"] a"
+    },
+    "HospitalSection": {
+      "sectionButton": "button:has-text(\"Investigation Finding (Hospital Verification)\")",
+      "visitToHospital": "select[name=\"visitToHospital\"]",
+      "hospitalRegistrationNumber": "input[name=\"hospitalRegistrationNumber\"]",
+      "OT": "select[name=\"OT\"]",
+      "relativeNearHospital": "select[name=\"relativeNearHospital\"]",
+      "comments": "textarea[name=\"Comments\"]",
+      "IPRegisterEntry": "select[name=\"IPRegisterEntry\"]",
+      "IPRegisterEntryReason": "textarea[name=\"IPRegisterEntryReason\"]",
+      "IPRegisterEntryYes": "input[name=\"IPRegisterEntryYes\"][value=\"Matching with Claim Documents\"]",
+      "ICPsCollected": "select[name=\"ICPsCollected\"]",
+      "ICPsNumber": "input[name=\"ICPsNumber\"]",
+      "ICPsCollectedFindings": "textarea[name=\"ICPsCollectedFindigs\"]",
+      "AnyOtherDispensaryNoted": "select[name=\"AnyOtherDispencaryNoted\"]",
+      "billBookCollected": "select[name=\"billBookCollected\"]",
+      "billBookCollectedReason": "textarea[name=\"billBookCollectedReason\"]",
+      "billBookCollectedObservations": "textarea[name=\"billBookCollectedObservations\"]",
+      "tariffDetailsCardCollected": "select[name=\"trafficDetailsCardCollected\"]",
+      "tariffDetailsCardCollectedReason": "textarea[name=\"trafficDetailsCardCollectedReason\"]",
+      "tariffDetailsCardObservations": "textarea[name=\"trafficDetailsCardObservations\"]",
+      "hospitalAuthorityStatement": "select[name=\"hospitalAuthorityStatement\"]",
+      "hospitalAuthorityStatementObservations": "textarea[name=\"hospitalAuthorityStatementObservations\"]",
+      "hospitalAuthorityPED": "select[name=\"hospitalAuthorityPED\"]",
+      "managementCaseSurgical": "input[name=\"ManagementCase\"][value=\"In Case of Surgical Management\"]",
+      "managementCaseMedical": "input[name=\"ManagementCase\"][value=\"In Case of Medical Management\"]",
+      "medicalManagementActiveLineOfTreatment": "textarea[name=\"MedicalManagementActiveLineOfTreatment\"]",
+      "noMlcApplicable": "input[name=\"Notmlcapplicable\"]",
+      "nameOfDoctor": "input[name=\"nameOfDoctor\"]",
+      "doctorQualification": "input[name=\"doctorQualification\"]",
+      "registrationNumber": "input[name=\"registrationNumber\"]",
+      "treatingDoctorStatementCollected": "select[name=\"treatingDoctorStatementCollected\"]",
+      "treatingDoctorStatementCollectedReason": "textarea[name=\"treatingDoctorStatementCollectedReason\"]",
+      "doctorPED": "select[name=\"DoctorPED\"]",
+      "preExistingDiseaseAnyDiscrepancy": "select[name=\"preExistingDeseaseAnyDiscrepancy\"]"
+    },
+    "LabSection": {
+      "billBookVisitDone": "select[name=\"billBookVisitDone\"]",
+      "billBookFindings": "textarea[name=\"billBookFindings\"]",
+      "labName": "input[name=\"labName\"]",
+      "labLocation": "input[name=\"labLocation\"]",
+      "inHouse": "select[name=\"inHouse\"]",
+      "labRegisterEntryVerified": "select[name=\"labRegisterEntryVerified\"]",
+      "labRegisterEntryVerifiedYes": "input[name=\"labRegisterEntryVerifiedYes\"][value=\"Matching with Claim Document\"]",
+      "billBook": "select[name=\"billBook\"]",
+      "billBookYes": "input[name=\"billBookYes\"][value=\"Matching with Claim Document\"]",
+      "reportsValidation": "select[name=\"reportsValidation\"]",
+      "nameOfEmpanelledPathologist": "input[name=\"nameOfEmpanelledPathologist\"]",
+      "billBookRegNo": "input[name=\"billBookRegNo\"]",
+      "pastRecordsChecked": "select[name=\"pastRecordsChecked\"]",
+      "labVerificationSummary": "textarea[name=\"labVerificationSummary\"]",
+      "labOption": "select[name=\"labOption\"]"
+    },
+    "ChemistSection": {
+      "chemistVerificationVisitDone": "select[name=\"chemistVerificationVisitDone\"]",
+      "pharmacyName": "input[name=\"pharmacyName\"]",
+      "pharmacyInHouse": "select[name=\"pharmacyInHouse\"]",
+      "pharmacyBillBook": "select[name=\"pharmacyBillBook\"]",
+      "pharmacyBillBookYes": "input[name=\"pharmacyBillBookYes\"][value=\"Matching with Claim Documents\"]",
+      "pharmacyBillRecords": "select[name=\"pharmacyBillRecords\"]",
+      "pharmacyBillRecordsFindings": "textarea[name=\"pharmacyBillRecordsFindings\"]",
+      "purchaseInvoiceCollected": "select[name=\"PurchaseInvoiceCollected\"]",
+      "purchaseInvoiceCollectedYesVerified": "select[name=\"PurchaseInvoiceCollectedYesVerified\"]",
+      "pharmacyPastRecordsChecked": "select[name=\"pharmacyPastRecordsChecked\"]",
+      "chemistStatementCollected": "select[name=\"chemistStatementCollected\"]",
+      "chemistStatementCollectedReason": "textarea[name=\"chemistStatementCollectedReason\"]",
+      "overAllChemistVerificationSummary": "textarea[name=\"overAllChemistVerificationSummary\"]",
+      "labOptionPastRecords": "textarea[name=\"labOptionPastRecords\"]",
+      "labOptionOtherObservationFindings": "textarea[name=\"labOptionOtherObservation_Findings\"]",
+      "labOptionPEDFindings": "select[name=\"labOptionPEDFindings\"]",
+      "overAllHospitalVerificationFindings": "textarea[name=\"overAllHospitalVerificationFindings\"]"
+    },
+    "HomeVisitSection": {
+      "sectionButton": "button:has-text(\"Investigation Finding (Home Visit)\")",
+      "visitDone": "select[name=\"Visitdone\"]",
+      "appointmentTaken": "select[name=\"appointmentTaken\"]",
+      "nameOfInsuredWithWhomAppointmentWasTaken": "input[name=\"NameOfInsuredWithWhomAppointmentWasTaken\"]",
+      "mobileNo": "input[name=\"Mobile_no\"]",
+      "memberAddress": "textarea[name=\"MemberAddress\"]",
+      "nameOfPatient": "input[name=\"NameOfPatient\"]",
+      "dateOfBirthOfPatient": "input[name=\"DateOfBirthOfPatient\"]",
+      "gender": "select[name=\"Gender\"]",
+      "statementCollected": "select[name=\"StatementCollected\"]",
+      "statementCollectedFinding": "textarea[name=\"StatementCollectedFinding\"]",
+      "anyDiscrepancies": "select[name=\"AnyDiscrepancies\"]",
+      "anyPEDNonDisclosureFindings": "select[name=\"AnyPED_NonDisclosurefindings\"]",
+      "pastDocumentsCollected": "select[name=\"PastDocumentsCollected\"]",
+      "pastDocumentsCollectedReason": "textarea[name=\"PastDocumentsCollectedReason\"]",
+      "KYCDocumentsCollected": "select[name=\"KYCDocumentsCollected\"]",
+      "KYCDocumentsCollectedYes": "input[name=\"KYCDocumentsCollected_Yes\"][value=\"Matching with Claim Documents\"]"
+    },
+    "OthersSection": {
+      "notVVApplicable": "input[name=\"NotVVapplicable\"]",
+      "notVFPApplicable": "input[name=\"NotVFPapplicable\"]",
+      "notICFCApplicable": "input[name=\"NotICFCapplicable\"]",
+      "addDocumentLabel": "label:has-text(\"ADD\")",
+      "docMember": "input[name=\"docmember\"]"
+    },
+    "OfficeVisitSection": {
+      "sectionButtonName": "Investigation Finding (Office/School/College Visit)",
+      "officeVisit": "select[name=\"Office_Visit\"]",
+      "officeVisitNotDoneReason": "textarea[name=\"Office_Visit_notDoneReason\"]"
+    },
+    "ConclusionSection": {
+      "sectionButton": "button:has-text(\"Verification Conclusion\")",
+      "finalObservationSuggestion": "textarea[name=\"finalObservationSuggestion\"]",
+      "uploadInput": "input[id=\"inputGroupFile04\"]",
+      "uploadAddLabel": "label[for=\"inputGroupFile04\"]",
+      "invoiceAddLabel": "#root > div > div.App > div > div.wrapper.d-flex.flex-column.min-vh-100.bg-light > div.body.flex-grow-1.px-3 > div > div > div:nth-child(13) > div.accordion-collapse.collapse.show.enter-done > div > form > div:nth-child(11) > fieldset > fieldset > div > div > div > div > label",
+      "expenditureRemark": "textarea[name=\"expenditureRemark\"]",
+      "expenditureAmount": "input[name=\"expenditureAmount\"]"
+    }
+  }
+}
