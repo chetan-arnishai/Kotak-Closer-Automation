@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "package": "electron-packager . Care-Cashless-Closer-Case --platform=win32 --arch=x64 --out=dist --overwrite"
+    "package": "electron-packager . Kotak-Case-Closer-Automation --platform=win32 --arch=x64 --out=dist --overwrite"
   },
   "keywords": [],
   "author": "",

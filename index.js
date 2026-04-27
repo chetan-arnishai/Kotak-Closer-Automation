@@ -1811,7 +1811,7 @@ ipcMain.handle('start', async (event, { pdfPath, claimNumber }) => {
       return { success: false };
     }
 
-    await fillForm(playwrightPage);
+    // await fillForm(playwrightPage);
 
     // Tell renderer to show Run Conclusion button
     mainWindow.webContents.send('form-done');
