@@ -10,6 +10,7 @@ let selectedPdfPath = null;
 const claimInput      = document.getElementById('claimInput');
 const btnStart        = document.getElementById('btnStart');
 const btnHow          = document.getElementById('btnHow');
+const btnSupplementary= document.getElementById('btnSupplementary');
 const btnConclusion   = document.getElementById('btnConclusion');
 const logWindow       = document.getElementById('logWindow');
 const banner          = document.getElementById('banner');
@@ -103,10 +104,13 @@ btnStart.addEventListener('click', async () => {
 
   // Disable controls during run
   btnStart.disabled = true;
+  btnSupplementary.style.display = 'none';
+  btnSupplementary.disabled = false;
   btnConclusion.style.display = 'none';
+  btnConclusion.disabled = false;
   logWindow.textContent = '';
 
-  setBanner('running', '⏳ Running automation...');
+  setBanner('running', '⏳ Step 1 running (Login + Find claim + Fill core sections)...');
   runBadge.textContent = `Run #${runCount}`;
 
   // Show folder contents in log
@@ -117,10 +121,25 @@ btnStart.addEventListener('click', async () => {
   const result = await window.api.start({ pdfPath: selectedPdfPath, claimNumber });
 
   if (result.success) {
-    setBanner('running', '⏳ Form filled — submit manually, then click Run Conclusion.');
+    // UI will update when we receive `step1-done` from main process.
   } else {
     setBanner('error', '❌ Automation failed. Check logs.');
     btnStart.disabled = false;
+  }
+});
+
+// ─── Fill Remaining Form (Step 2) ─────────────────────────────────────────────
+
+btnSupplementary.addEventListener('click', async () => {
+  btnSupplementary.disabled = true;
+  setBanner('running', '⏳ Step 2 running (Fill remaining investigation sections)...');
+  appendLog('\n▶ Filling remaining investigation sections...\n');
+
+  const result = await window.api.fillSupplementary();
+
+  if (!result.success) {
+    setBanner('error', '❌ Step 2 failed. Check logs.');
+    btnSupplementary.disabled = false;
   }
 });
 
@@ -149,12 +168,20 @@ btnConclusion.addEventListener('click', async () => {
 
 window.api.onLog(msg => appendLog(msg));
 
-// ─── IPC: form done → show Run Conclusion button ──────────────────────────────
+// ─── IPC: Step 1 done → show Step 2 button ───────────────────────────────────
 
-window.api.onFormDone(() => {
+window.api.onStep1Done(() => {
+  btnSupplementary.style.display = 'inline-block';
+  setBanner('stopped', '⏸ Step 1 done — click "Fill Remaining Form" to continue.');
+  appendLog('\n⏸ Step 1 done. Click "Fill Remaining Form" when ready.');
+});
+
+// ─── IPC: Step 2 done → show Run Conclusion button ───────────────────────────
+
+window.api.onSupplementaryDone(() => {
   btnConclusion.style.display = 'inline-block';
-  setBanner('stopped', '⏸ Form filled — submit manually, then click Run Conclusion.');
-  appendLog('\n⏸ Waiting for manual submit. Click Run Conclusion when ready.');
+  setBanner('stopped', '⏸ Step 2 done — submit manually, then click Run Conclusion.');
+  appendLog('\n⏸ Step 2 done. Submit the form manually, then click Run Conclusion.');
 });
 
 // ─── How to Run popup ─────────────────────────────────────────────────────────

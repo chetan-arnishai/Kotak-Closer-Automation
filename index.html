@@ -40,6 +40,7 @@
     button:disabled { background: #bdbdbd !important; cursor: not-allowed; }
     .btn-blue { background: #3f51b5; }
     .btn-orange { background: #e65100; }
+    #btnSupplementary { display: none; width: 200px; }
     #btnConclusion { display: none; width: 160px; }
     #logWindow { background: #f5f5f5; border: 1px solid #ddd; border-radius: 5px; padding: 10px; height: 260px; overflow-y: auto; font-family: monospace; font-size: 12px; white-space: pre-wrap; text-align: left; margin-top: 14px; }
     .log-sep { border: none; border-top: 2px dashed #bbb; margin: 5px 0; }
@@ -74,6 +75,7 @@
   <h3>Automation Runner</h3>
   <div class="btn-row">
     <button id="btnStart">▶ Start</button>
+    <button id="btnSupplementary" class="btn-orange">🧾 Fill Remaining Form</button>
     <button id="btnConclusion" class="btn-orange">📋 Run Conclusion</button>
     <button id="btnHow" class="btn-blue">How to Run</button>
   </div>
@@ -106,13 +108,22 @@
         <strong>Start दाबा — Login आपोआप होतो. OTP टाका.</strong>
       </li>
       <li>
-        After OTP is validated, navigate to the form page manually in the browser.<br>
-        Form fill will begin automatically.<br>
-        <strong>OTP नंतर ब्राउझरमध्ये फॉर्म पेजवर जा — फॉर्म भरणे आपोआप सुरू होईल.</strong>
+        After OTP is validated, open the claim and go to the <strong>Investigation form</strong> page in the browser (if not opened automatically).<br>
+        The app will fill <strong>Step 1</strong>: Hospital + Lab + Chemist sections.<br>
+        <strong>OTP नंतर क्लेम ओपन करून Investigation form पेजवर जा (जर आपोआप उघडले नाही तर).</strong><br>
+        <strong>Step 1 मध्ये Hospital + Lab + Chemist सेक्शन भरले जातील.</strong>
+      </li>
+      <li>
+        When Step 1 is done, click <strong>Fill Remaining Form</strong> in the app.<br>
+        This fills <strong>Step 2</strong>: Home Visit + Others + Office/School/College sections.<br>
+        <strong>Step 1 झाल्यावर app मधील Fill Remaining Form दाबा.</strong><br>
+        <strong>Step 2 मध्ये Home Visit + Others + Office/School/College सेक्शन भरले जातील.</strong>
       </li>
       <li>
         Submit the form manually. Then click <strong>Run Conclusion</strong> in the app.<br>
-        <strong>फॉर्म मॅन्युअली सबमिट करा. मग Run Conclusion दाबा.</strong>
+        This fills <strong>Step 3</strong>: Verification Conclusion + document uploads.<br>
+        <strong>फॉर्म मॅन्युअली सबमिट करा. मग Run Conclusion दाबा.</strong><br>
+        <strong>Step 3 मध्ये Verification Conclusion आणि documents upload होतील.</strong>
       </li>
       <li>
         Do <strong>NOT</strong> touch keyboard or mouse during automation.<br>

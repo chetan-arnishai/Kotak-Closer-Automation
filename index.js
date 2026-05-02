@@ -1147,11 +1147,44 @@ async function uploadInsuredPartPDF(page) {
   }, 'Upload Insured Part PDF');
 }
 
-// ─── Fill Form ────────────────────────────────────────────────────────────────
+// ─── Investigation Form Filling (3-step flow) ─────────────────────────────────
+/*
+  What this automation does (high level)
+  - User selects Main Report PDF in the desktop app.
+  - We convert that PDF into JSON using `test.py` (Camelot) and store it in `inputs/reportvalues.json`.
+  - Then Playwright opens Chromium, logs in, finds the claim, and fills the web form using locators from `config.json`.
 
-async function fillForm(page) {
-  const report = JSON.parse(fs.readFileSync(path.join(__dirname, 'inputs', 'reportvalues.json'), 'utf-8'));
-  log('\n📋 Starting fillForm...');
+  Why form filling is split into 2 parts (plus Conclusion)
+  - Step 1 (Start button): Fill the core investigation sections that are always needed first.
+  - Step 2 (Middle button): Fill the remaining investigation sections (your highlighted part).
+  - Step 3 (Run Conclusion button): Fill Verification Conclusion + upload documents.
+
+  Key assumptions
+  - `inputs/reportvalues.json` is generated before we start filling sections.
+  - Additional PDFs are placed in Desktop/upload_documents (invoice.pdf is handled separately).
+*/
+
+function loadReportValues() {
+  const reportPath = path.join(__dirname, 'inputs', 'reportvalues.json');
+  return JSON.parse(fs.readFileSync(reportPath, 'utf-8'));
+}
+
+/**
+ * Step 1 (Start): Fill core investigation sections (Hospital + Lab + Chemist).
+ *
+ * When it runs:
+ * - Only after login + claim is opened.
+ *
+ * Preconditions:
+ * - Browser is on the claim investigation form page where these section buttons/fields exist.
+ *
+ * Failure behavior:
+ * - Uses `safeAction()` for most fields so missing fields log an error and continue.
+ * - If a section button is not found, you’ll see a failure in logs (usually means we are on the wrong page/state).
+ */
+async function fillInvestigationCoreSections(page) {
+  const report = loadReportValues();
+  log('\n📋 Step 1: Filling core sections (Hospital + Lab + Chemist)...');
 
   // ── Hospital Section ───────────────────────────────────────────────────────
 
@@ -1485,6 +1518,27 @@ async function fillForm(page) {
   }, 'Overall Hospital Verification Findings');
 
   await page.waitForTimeout(1000);
+  log('\n✅ Step 1 done: Core sections filled. Submit manually if needed, then click the middle button to fill the remaining sections.');
+}
+
+/**
+ * Step 2 (Middle button): Fill supplementary investigation sections.
+ *
+ * What it fills:
+ * - Home Visit section
+ * - Others section (including insured part PDF upload)
+ * - Office/School/College Visit section
+ *
+ * When it runs:
+ * - After Step 1 is completed, and user clicks the middle button.
+ *
+ * Preconditions:
+ * - Same logged-in browser session should still be open on the claim form.
+ * - User should navigate (if required) to the form page/state where these sections are available.
+ */
+async function fillInvestigationSupplementarySections(page) {
+  const report = loadReportValues();
+  log('\n📋 Step 2: Filling supplementary sections (Home Visit + Others + Office/School/College)...');
 
   // ── Home Visit Section ─────────────────────────────────────────────────────
 
@@ -1595,7 +1649,18 @@ async function fillForm(page) {
     await page.locator(LOC.OfficeVisitSection.officeVisitNotDoneReason).fill('NA');
   }, 'Office Visit Not Done Reason');
 
-  log('\n✅ fillForm completed — submit the form manually, then click Run Conclusion.');
+  log('\n✅ Step 2 done: Supplementary sections filled — submit manually, then click Run Conclusion.');
+}
+
+/**
+ * Backward-compatible helper:
+ * - Fills all investigation sections (Step 1 + Step 2).
+ * - Not used by the new 3-button UI flow, but useful for debugging.
+ */
+async function fillForm(page) {
+  log('\n📋 Starting fillForm (all investigation sections)...');
+  await fillInvestigationCoreSections(page);
+  await fillInvestigationSupplementarySections(page);
 }
 
 // ─── Conclusion ───────────────────────────────────────────────────────────────
@@ -1722,8 +1787,6 @@ async function findClaim(page, claimNumber) {
         // ✅ FOUND
         await page.locator(LOC.ClaimSearch.firstResultLink).first().click();
         log(`✅ Claim found in Section ${i + 1}`);
-
-        await fillForm(page);
         return true;
       }
 
@@ -1811,14 +1874,41 @@ ipcMain.handle('start', async (event, { pdfPath, claimNumber }) => {
       return { success: false };
     }
 
-    // await fillForm(playwrightPage);
-
-    // Tell renderer to show Run Conclusion button
-    mainWindow.webContents.send('form-done');
+    /*
+      Step 1 (Start button)
+      - At this point: login is done and claim page is opened.
+      - Now we fill only the core sections (Hospital + Lab + Chemist).
+      - After this completes, the UI should show the middle button for Step 2.
+    */
+    await fillInvestigationCoreSections(playwrightPage);
+    mainWindow.webContents.send('step1-done');
 
     return { success: true };
   } catch (err) {
     log(`❌ Fatal error: ${err.message}`);
+    return { success: false };
+  }
+});
+
+// ─── IPC: Fill Supplementary Sections (Middle button) ─────────────────────────
+ipcMain.handle('fill-supplementary', async () => {
+  try {
+    /*
+      Step 2 (Middle button)
+      - Uses the same logged-in browser session created in Step 1.
+      - Fills Home Visit + Others + Office/School/College.
+      - After this completes, the UI should show the Run Conclusion button.
+    */
+    if (!playwrightPage) {
+      log('❌ No active browser session. Please run Start first.');
+      return { success: false };
+    }
+
+    await fillInvestigationSupplementarySections(playwrightPage);
+    mainWindow.webContents.send('supplementary-done');
+    return { success: true };
+  } catch (err) {
+    log(`❌ Supplementary step error: ${err.message}`);
     return { success: false };
   }
 });
